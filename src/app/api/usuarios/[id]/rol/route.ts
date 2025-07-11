@@ -1,20 +1,18 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 // PUT - Cambiar rol de usuario
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ): Promise<NextResponse> {
-  const id = parseInt(params.id);
+  const id = parseInt(context.params.id);
   try {
     const session = await getServerSession(authOptions);
-    
-    if (!session || !session.user || !session.user.rol || session.user.rol !== "admin") {
-      return NextResponse.json({ error: "Acceso denegado" }, { status: 403 });
+    if (!session) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
     if (isNaN(id)) {
@@ -27,36 +25,21 @@ export async function PUT(
       return NextResponse.json({ error: "Rol inválido" }, { status: 400 });
     }
 
-    // Verificar si el usuario existe
-    const usuarioExistente = await prisma.user.findUnique({
-      where: { id }
-    });
-
-    if (!usuarioExistente) {
-      return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
-    }
-
-    // No permitir cambiar el rol del propio usuario admin
-    if (session.user.email === usuarioExistente.email) {
-      return NextResponse.json({ error: "No puedes cambiar tu propio rol" }, { status: 400 });
-    }
-
-    // Actualizar rol
-    const usuarioActualizado = await prisma.user.update({
+    const usuario = await prisma.user.update({
       where: { id },
       data: { rol },
       select: {
         id: true,
-        nombre: true,
         email: true,
+        nombre: true,
         rol: true,
-        createdAt: true
-      }
+        createdAt: true,
+      },
     });
 
-    return NextResponse.json(usuarioActualizado);
+    return NextResponse.json(usuario);
   } catch (error) {
-    console.error("Error al cambiar rol:", error);
+    console.error("Error al cambiar rol de usuario:", error);
     return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
   }
 } 

@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, context: { params: { id: string } }) {
   try {
     const { estado } = await request.json();
-    const id = Number(params.id);
+    const id = Number(context.params.id);
     if (!estado || isNaN(id)) {
       return NextResponse.json({ error: 'Datos inválidos' }, { status: 400 });
     }
