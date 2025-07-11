@@ -77,6 +77,7 @@ export default function Header() {
         
         {/* Navegación de escritorio */}
         <div className="hidden md:flex gap-4 text-base font-medium items-center">
+          <Link href="/" className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition"><Home size={20}/>Inicio</Link>
           <Link href="/productos" className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition"><Shirt size={20}/>Productos</Link>
           <Link href="/personalizar" className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition"><Home size={20}/>Personalizar</Link>
           <Link href="/carrito" className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition relative">
@@ -176,6 +177,13 @@ export default function Header() {
         <div className="px-4 py-6 space-y-4">
           {/* Enlaces de navegación */}
           <div className="space-y-2">
+            <Link 
+              href="/" 
+              className="flex items-center gap-3 px-4 py-3 text-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition"
+              onClick={() => setOpenMobileMenu(false)}
+            >
+              <Home size={20}/> Inicio
+            </Link>
             <Link 
               href="/productos" 
               className="flex items-center gap-3 px-4 py-3 text-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition"
