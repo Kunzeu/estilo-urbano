@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { v2 as cloudinary } from "cloudinary";
 
 // GET - Obtener producto por ID
 export async function GET(
@@ -60,9 +59,20 @@ export async function DELETE(
     if (isNaN(productId)) {
       return NextResponse.json({ error: "ID de producto inválido" }, { status: 400 });
     }
-    const producto = await prisma.producto.delete({
+    
+    // Verificar que el producto existe antes de eliminarlo
+    const productoExistente = await prisma.producto.findUnique({
       where: { id: productId },
     });
+    
+    if (!productoExistente) {
+      return NextResponse.json({ error: "Producto no encontrado" }, { status: 404 });
+    }
+    
+    await prisma.producto.delete({
+      where: { id: productId },
+    });
+    
     return NextResponse.json({ message: "Producto eliminado correctamente" });
   } catch (error) {
     console.error("Error al eliminar producto:", error);
