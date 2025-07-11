@@ -4,15 +4,6 @@ import FacebookProvider from "next-auth/providers/facebook";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-// Interface needed for type reference
-interface UserWithRol {
-  id?: string | number;
-  name?: string | null;
-  nombre?: string | null;
-  email?: string | null;
-  image?: string | null;
-  rol?: string;
-}
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
@@ -45,6 +36,7 @@ export const authOptions = {
     strategy: "jwt" as const,
   },
   callbacks: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async jwt(params: any) {
       const { token, user } = params;
       if (user) {
@@ -53,6 +45,7 @@ export const authOptions = {
       }
       return token;
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session(params: any) {
       const { session, token } = params;
       if (session.user && token) {
