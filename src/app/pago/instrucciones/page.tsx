@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Copy, CheckCircle, ArrowLeft, Phone } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,7 @@ interface Pedido {
   }>;
 }
 
-export default function InstruccionesPagoPage() {
+function InstruccionesPagoContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [pedido, setPedido] = useState<Pedido | null>(null);
@@ -251,5 +251,20 @@ export default function InstruccionesPagoPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function InstruccionesPagoPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Cargando instrucciones de pago...</p>
+        </div>
+      </div>
+    }>
+      <InstruccionesPagoContent />
+    </Suspense>
   );
 } 
