@@ -4,12 +4,9 @@ import FacebookProvider from "next-auth/providers/facebook";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import { JWT } from "next-auth/jwt";
-import { Session } from "next-auth";
-import type { NextAuthOptions } from "next-auth";
-
+// Interface needed for type reference
 interface UserWithRol {
-  id?: number;
+  id?: string | number;
   name?: string | null;
   nombre?: string | null;
   email?: string | null;
@@ -17,7 +14,7 @@ interface UserWithRol {
   rol?: string;
 }
 
-export const authOptions: NextAuthOptions = {
+export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
@@ -48,14 +45,16 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt" as const,
   },
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: UserWithRol }) {
+    async jwt(params: any) {
+      const { token, user } = params;
       if (user) {
         token.rol = user.rol;
         token.nombre = user.nombre || user.name || null;
       }
       return token;
     },
-    async session({ session, token }: { session: Session; token: JWT }) {
+    async session(params: any) {
+      const { session, token } = params;
       if (session.user && token) {
         session.user.rol = token.rol as string;
         session.user.nombre = token.nombre as string;

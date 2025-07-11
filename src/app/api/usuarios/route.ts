@@ -11,7 +11,6 @@ export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     
-    // @ts-expect-error - NextAuth session typing issue
     if (!session?.user?.rol || session.user.rol !== "admin") {
       return NextResponse.json({ error: "Acceso denegado" }, { status: 403 });
     }
@@ -41,7 +40,6 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     
-    // @ts-expect-error - NextAuth session typing issue
     if (!session?.user?.rol || session.user.rol !== "admin") {
       return NextResponse.json({ error: "Acceso denegado" }, { status: 403 });
     }

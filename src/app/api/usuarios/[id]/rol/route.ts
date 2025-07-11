@@ -7,12 +7,12 @@ const prisma = new PrismaClient();
 // PUT - Cambiar rol de usuario
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+  context: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
+  const params = await context.params;
   try {
     const session = await getServerSession(authOptions);
     
-    // @ts-expect-error - NextAuth session typing issue
     if (!session || !session.user || !session.user.rol || session.user.rol !== "admin") {
       return NextResponse.json({ error: "Acceso denegado" }, { status: 403 });
     }
@@ -38,7 +38,6 @@ export async function PUT(
     }
 
     // No permitir cambiar el rol del propio usuario admin
-    // @ts-expect-error - NextAuth session typing issue
     if (session.user.email === usuarioExistente.email) {
       return NextResponse.json({ error: "No puedes cambiar tu propio rol" }, { status: 400 });
     }

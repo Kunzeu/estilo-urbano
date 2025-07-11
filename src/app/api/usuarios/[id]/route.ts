@@ -8,8 +8,9 @@ const prisma = new PrismaClient();
 // PUT - Editar usuario
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+  context: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
+  const params = await context.params;
   try {
     const session = await getServerSession(authOptions);
     
@@ -72,8 +73,9 @@ export async function PUT(
 // DELETE - Eliminar usuario
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+  context: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
+  const params = await context.params;
   try {
     const session = await getServerSession(authOptions);
     
@@ -97,7 +99,6 @@ export async function DELETE(
     }
 
     // No permitir eliminar el propio usuario admin
-    // @ts-expect-error - NextAuth session typing issue
     if (session.user.email === usuarioExistente.email) {
       return NextResponse.json({ error: "No puedes eliminar tu propia cuenta" }, { status: 400 });
     }

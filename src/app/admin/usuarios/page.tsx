@@ -10,6 +10,14 @@ interface User {
   rol: string;
 }
 
+interface UserWithRol {
+  name?: string | null;
+  nombre?: string | null;
+  email?: string | null;
+  image?: string | null;
+  rol?: string;
+}
+
 export default function UsuariosAdminPage() {
   const { data: session, status } = useSession();
   const [usuarios, setUsuarios] = useState<User[]>([]);
@@ -22,12 +30,12 @@ export default function UsuariosAdminPage() {
   const [eliminando, setEliminando] = useState<number | null>(null);
 
   useEffect(() => {
-    if (session?.user?.rol !== "admin") return;
+    if ((session?.user as UserWithRol)?.rol !== "admin") return;
     fetch("/api/usuarios").then(r => r.json()).then(setUsuarios).finally(() => setLoading(false));
   }, [session]);
 
   if (status === "loading") return <div className="p-8">Cargando...</div>;
-  if (!session || session.user.rol !== "admin") return <div className="p-8 text-red-600">Acceso denegado</div>;
+  if (!session || (session.user as UserWithRol)?.rol !== "admin") return <div className="p-8 text-red-600">Acceso denegado</div>;
 
   async function cambiarRol(id: number, rol: string) {
     await fetch(`/api/usuarios/${id}/rol`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ rol }) });
