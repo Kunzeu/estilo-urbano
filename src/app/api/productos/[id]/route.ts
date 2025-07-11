@@ -4,10 +4,10 @@ import { prisma } from "@/lib/prisma";
 // GET - Obtener producto por ID
 export async function GET(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await params;
     const productId = parseInt(id);
     if (isNaN(productId)) {
       return NextResponse.json({ error: "ID de producto inválido" }, { status: 400 });
@@ -28,10 +28,10 @@ export async function GET(
 // PUT - Editar producto
 export async function PUT(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await params;
     const productId = parseInt(id);
     if (isNaN(productId)) {
       return NextResponse.json({ error: "ID de producto inválido" }, { status: 400 });
@@ -51,10 +51,10 @@ export async function PUT(
 // DELETE - Eliminar producto
 export async function DELETE(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await params;
     const productId = parseInt(id);
     if (isNaN(productId)) {
       return NextResponse.json({ error: "ID de producto inválido" }, { status: 400 });

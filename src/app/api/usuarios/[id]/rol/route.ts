@@ -6,16 +6,18 @@ import { prisma } from "@/lib/prisma";
 // PUT - Cambiar rol de usuario
 export async function PUT(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
-  const id = parseInt(context.params.id);
   try {
+    const { id } = await params;
+    const userId = parseInt(id);
+    
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
-    if (isNaN(id)) {
+    if (isNaN(userId)) {
       return NextResponse.json({ error: "ID de usuario inválido" }, { status: 400 });
     }
 
@@ -26,7 +28,7 @@ export async function PUT(
     }
 
     const usuario = await prisma.user.update({
-      where: { id },
+      where: { id: userId },
       data: { rol },
       select: {
         id: true,

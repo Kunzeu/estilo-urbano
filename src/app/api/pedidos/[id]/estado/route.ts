@@ -1,15 +1,16 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-export async function PUT(request: Request, context: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { estado } = await request.json();
-    const id = Number(context.params.id);
-    if (!estado || isNaN(id)) {
+    const { id } = await params;
+    const pedidoId = Number(id);
+    if (!estado || isNaN(pedidoId)) {
       return NextResponse.json({ error: 'Datos inválidos' }, { status: 400 });
     }
     const pedido = await prisma.pedido.update({
-      where: { id },
+      where: { id: pedidoId },
       data: { estado },
     });
     return NextResponse.json({ success: true, pedido });
