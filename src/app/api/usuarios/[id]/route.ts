@@ -13,6 +13,7 @@ export async function PUT(
   try {
     const session = await getServerSession(authOptions);
     
+    // @ts-expect-error - NextAuth session typing issue
     if (!session?.user?.rol || session.user.rol !== "admin") {
       return NextResponse.json({ error: "Acceso denegado" }, { status: 403 });
     }
@@ -76,6 +77,7 @@ export async function DELETE(
   try {
     const session = await getServerSession(authOptions);
     
+    // @ts-expect-error - NextAuth session typing issue
     if (!session?.user?.rol || session.user.rol !== "admin") {
       return NextResponse.json({ error: "Acceso denegado" }, { status: 403 });
     }
@@ -95,6 +97,7 @@ export async function DELETE(
     }
 
     // No permitir eliminar el propio usuario admin
+    // @ts-expect-error - NextAuth session typing issue
     if (session.user.email === usuarioExistente.email) {
       return NextResponse.json({ error: "No puedes eliminar tu propia cuenta" }, { status: 400 });
     }
