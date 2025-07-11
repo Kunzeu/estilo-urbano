@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
@@ -9,7 +9,7 @@ cloudinary.config({
 
 export const runtime = "nodejs";
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   const formData = await req.formData();
   const file = formData.get("file") as File;
 

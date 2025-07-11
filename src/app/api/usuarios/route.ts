@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { PrismaClient } from "@prisma/client";
@@ -36,7 +36,7 @@ export async function GET() {
 }
 
 // POST - Crear nuevo usuario
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions);
     

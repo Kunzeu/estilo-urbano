@@ -1,14 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { v2 as cloudinary } from "cloudinary";
 
 // GET - Obtener producto por ID
 export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  request: Request,
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const productId = parseInt(id);
     if (isNaN(productId)) {
       return NextResponse.json({ error: "ID de producto inválido" }, { status: 400 });
@@ -31,11 +31,11 @@ export async function GET(
 
 // PUT - Editar producto
 export async function PUT(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  request: Request,
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const productId = parseInt(id);
     if (isNaN(productId)) {
       return NextResponse.json({ error: "ID de producto inválido" }, { status: 400 });
@@ -74,11 +74,11 @@ export async function PUT(
 
 // DELETE - Eliminar producto
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  request: Request,
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const productId = parseInt(id);
     if (isNaN(productId)) {
       return NextResponse.json({ error: "ID de producto inválido" }, { status: 400 });

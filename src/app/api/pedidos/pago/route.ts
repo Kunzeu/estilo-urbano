@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { numeroPedido, estadoPago } = body;
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Endpoint para simular la confirmación de pago desde el banco
-export async function PUT(request: NextRequest) {
+export async function PUT(request: Request) {
   try {
     const body = await request.json();
     const { numeroPedido, confirmacionBanco } = body;

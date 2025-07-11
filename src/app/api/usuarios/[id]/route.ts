@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { PrismaClient } from "@prisma/client";
@@ -7,10 +7,10 @@ const prisma = new PrismaClient();
 
 // PUT - Editar usuario
 export async function PUT(
-  request: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  request: Request,
+  { params }: { params: { id: string } }
 ): Promise<NextResponse> {
-  const params = await context.params;
+  const id = parseInt(params.id);
   try {
     const session = await getServerSession(authOptions);
     
@@ -18,7 +18,6 @@ export async function PUT(
       return NextResponse.json({ error: "Acceso denegado" }, { status: 403 });
     }
 
-    const id = parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: "ID de usuario inválido" }, { status: 400 });
     }
@@ -71,10 +70,10 @@ export async function PUT(
 
 // DELETE - Eliminar usuario
 export async function DELETE(
-  request: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  request: Request,
+  { params }: { params: { id: string } }
 ): Promise<NextResponse> {
-  const params = await context.params;
+  const id = parseInt(params.id);
   try {
     const session = await getServerSession(authOptions);
     
@@ -82,7 +81,6 @@ export async function DELETE(
       return NextResponse.json({ error: "Acceso denegado" }, { status: 403 });
     }
 
-    const id = parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: "ID de usuario inválido" }, { status: 400 });
     }
