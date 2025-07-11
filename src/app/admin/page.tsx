@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Link from "next/link";
+import { Users, Package, ClipboardList, Settings } from "lucide-react";
 
 interface UserWithRol {
   name?: string | null;
@@ -18,12 +19,10 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (status === "loading") return;
-    
     if (!session) {
       router.push("/login");
       return;
     }
-
     if ((session.user as UserWithRol)?.rol !== "admin") {
       router.push("/");
       return;
@@ -46,85 +45,66 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-6 sm:py-10 px-4 sm:px-6">
-      <div className="text-center mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-4">
-          Panel de Administración
-        </h1>
-        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
-          Bienvenido, {(session.user as UserWithRol)?.nombre ?? session.user?.name ?? session.user?.email}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 hover:shadow-xl transition-shadow">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-            Gestión de Usuarios
-          </h3>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Administra usuarios, roles y permisos del sistema.
-          </p>
-          <a 
-            href="/admin/usuarios" 
-            className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Gestionar Usuarios
-          </a>
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-blue-50 to-gray-200 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 py-8 px-2">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-10">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-2 drop-shadow">Panel de Administración</h1>
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300">Bienvenido, <span className="font-semibold text-blue-600 dark:text-blue-400">{(session.user as UserWithRol)?.nombre ?? session.user?.name ?? session.user?.email}</span></p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 hover:shadow-xl transition-shadow">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-            Gestión de Productos
-          </h3>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Crea, edita y elimina productos del catálogo.
-          </p>
-          <a 
-            href="/admin/productos" 
-            className="inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
-          >
-            Gestionar Productos
-          </a>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Usuarios */}
+          <div className="group bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 flex flex-col items-center text-center transition-transform hover:-translate-y-1 hover:shadow-2xl border border-transparent hover:border-blue-200 dark:hover:border-blue-800">
+            <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-full mb-4">
+              <Users size={40} className="text-blue-600 dark:text-blue-400" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Gestión de Usuarios</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">Administra usuarios, roles y permisos del sistema.</p>
+            <Link href="/admin/usuarios" className="w-full inline-block bg-blue-600 text-white font-semibold py-2 rounded-lg shadow hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900">Gestionar Usuarios</Link>
+          </div>
+
+          {/* Productos */}
+          <div className="group bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 flex flex-col items-center text-center transition-transform hover:-translate-y-1 hover:shadow-2xl border border-transparent hover:border-green-200 dark:hover:border-green-800">
+            <div className="bg-green-100 dark:bg-green-900 p-4 rounded-full mb-4">
+              <Package size={40} className="text-green-600 dark:text-green-400" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Gestión de Productos</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">Crea, edita y elimina productos del catálogo.</p>
+            <Link href="/admin/productos" className="w-full inline-block bg-green-600 text-white font-semibold py-2 rounded-lg shadow hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900">Gestionar Productos</Link>
+          </div>
+
+          {/* Pedidos */}
+          <div className="group bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 flex flex-col items-center text-center transition-transform hover:-translate-y-1 hover:shadow-2xl border border-transparent hover:border-orange-200 dark:hover:border-orange-800">
+            <div className="bg-orange-100 dark:bg-orange-900 p-4 rounded-full mb-4">
+              <ClipboardList size={40} className="text-orange-500 dark:text-orange-400" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Gestión de Pedidos</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">Visualiza y actualiza el estado de todos los pedidos realizados en la tienda.</p>
+            <Link href="/admin/pedidos" className="w-full inline-block bg-orange-500 text-white font-semibold py-2 rounded-lg shadow hover:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900">Gestionar Pedidos</Link>
+          </div>
+
+          {/* Configuración */}
+          <div className="group bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 flex flex-col items-center text-center transition-transform hover:-translate-y-1 hover:shadow-2xl border border-transparent hover:border-purple-200 dark:hover:border-purple-800">
+            <div className="bg-purple-100 dark:bg-purple-900 p-4 rounded-full mb-4">
+              <Settings size={40} className="text-purple-600 dark:text-purple-400" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Configuración</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">Ajustes generales del sistema y configuración.</p>
+            <Link href="/admin/configuracion" className="w-full inline-block bg-purple-600 text-white font-semibold py-2 rounded-lg shadow hover:bg-purple-700 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900">Configuración</Link>
+          </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 hover:shadow-xl transition-shadow">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-            Gestión de pedidos
-          </h3>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Visualiza y actualiza el estado de todos los pedidos realizados en la tienda.
-          </p>
-          <a 
-            href="/admin/pedidos" 
-            className="inline-block bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors"
+        <div className="mt-10 text-center">
+          <Link 
+            href="/" 
+            className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors font-medium text-base"
           >
-            Gestionar Pedidos
-          </a>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+            Volver al inicio
+          </Link>
         </div>
-
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 hover:shadow-xl transition-shadow">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-            Configuración
-          </h3>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Ajustes generales del sistema y configuración.
-          </p>
-          <a 
-            href="/admin/configuracion" 
-            className="inline-block bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
-          >
-            Configuración
-          </a>
-        </div>
-      </div>
-
-      <div className="mt-6 sm:mt-8 text-center">
-        <Link 
-          href="/" 
-          className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
-        >
-          ← Volver al inicio
-        </Link>
       </div>
     </div>
   );
