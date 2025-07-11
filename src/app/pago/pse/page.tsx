@@ -170,7 +170,7 @@ function PagoPSEContent() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Volver
           </button>
-          <h1 className="text-3xl font-bold text-gray-900">Pago PSE</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Pago Nequi</h1>
         </div>
 
         <div className="bg-white rounded-lg shadow-sm border p-8">
@@ -181,8 +181,8 @@ function PagoPSEContent() {
                 <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <CreditCard className="w-8 h-8 text-blue-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Pago PSE</h2>
-                <p className="text-gray-600">Transferencia bancaria segura</p>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Pago Nequi</h2>
+                <p className="text-gray-600">Pago rápido y seguro</p>
               </div>
             )}
 
@@ -256,7 +256,7 @@ function PagoPSEContent() {
                 onClick={iniciarPago}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white"
               >
-                Iniciar pago PSE
+                Iniciar pago Nequi
               </Button>
             )}
 

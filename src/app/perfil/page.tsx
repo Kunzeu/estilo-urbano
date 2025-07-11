@@ -47,50 +47,47 @@ export default function PerfilPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-6 sm:py-8">
+      <div className="max-w-4xl mx-auto px-2 sm:px-4 lg:px-8">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-              <span className="text-2xl font-bold text-blue-600">
+        <div className="bg-white rounded-lg shadow-sm p-3 sm:p-6 mb-4 sm:mb-6">
+          <div className="flex flex-col sm:flex-row items-center sm:space-x-4 space-y-3 sm:space-y-0">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center">
+              <span className="text-xl sm:text-2xl font-bold text-blue-600">
                 {user?.name?.charAt(0).toUpperCase() || 'U'}
               </span>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+            <div className="text-center sm:text-left">
+              <h1 className="text-lg sm:text-2xl font-bold text-gray-900 break-words">
                 {user?.name || 'Usuario'}
               </h1>
-              <p className="text-gray-600">{user?.email}</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-gray-600 text-sm sm:text-base break-words">{user?.email}</p>
+              <p className="text-xs sm:text-sm text-gray-500">
                 Miembro desde {user?.createdAt ? new Date(user.createdAt).toLocaleDateString('es-CO') : 'N/A'}
               </p>
             </div>
           </div>
         </div>
-
         {/* Navigation Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 md:gap-6">
           {/* Mis Pedidos */}
           <Link href="/perfil/pedidos" className="block">
-            <div className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow cursor-pointer border border-gray-200">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-white rounded-lg shadow-sm p-3 sm:p-6 hover:shadow-md transition-shadow cursor-pointer border border-gray-200 flex items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Mis Pedidos</h3>
-                  <p className="text-gray-600">Ver historial de compras</p>
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900">Mis Pedidos</h3>
+                  <p className="text-gray-600 text-xs sm:text-sm">Ver historial de compras</p>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
 
           {/* Información Personal */}
           <Link href="/perfil/info" className="block">
-            <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer">
+            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                   <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,7 +104,7 @@ export default function PerfilPage() {
 
           {/* Direcciones */}
           <Link href="/perfil/direcciones" className="block">
-            <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer">
+            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
                   <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -125,7 +122,7 @@ export default function PerfilPage() {
 
           {/* Favoritos */}
           <Link href="/perfil/favoritos" className="block">
-            <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer">
+            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
                   <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -142,7 +139,7 @@ export default function PerfilPage() {
 
           {/* Configuración */}
           <Link href="/perfil/configuracion" className="block">
-            <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer">
+            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
                   <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -159,7 +156,7 @@ export default function PerfilPage() {
           </Link>
 
           {/* Cerrar Sesión */}
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+          <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 border border-gray-200">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
                 <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,62 +165,14 @@ export default function PerfilPage() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">Cerrar Sesión</h3>
-                <p className="text-gray-600">Salir de la cuenta</p>
+                <p className="text-gray-600 text-xs sm:text-sm">Salir de la cuenta</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Quick Stats */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                  </svg>
-                </div>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Total Pedidos</p>
-                <p className="text-2xl font-semibold text-gray-900">0</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Pedidos Completados</p>
-                <p className="text-2xl font-semibold text-gray-900">0</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">En Proceso</p>
-                <p className="text-2xl font-semibold text-gray-900">0</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Eliminado: tarjetas de resumen de pedidos */}
       </div>
     </div>
   );

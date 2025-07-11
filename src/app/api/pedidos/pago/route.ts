@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Pedido no encontrado' }, { status: 404 });
     }
 
-    // Simular procesamiento de pago PSE
+    // Simular procesamiento de pago Nequi
     let nuevoEstado = 'pendiente_pago';
     let mensaje = '';
 

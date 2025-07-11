@@ -107,13 +107,19 @@ export async function GET(request: NextRequest) {
     if (email) {
       const pedidos = await prisma.pedido.findMany({
         where: { email },
-        include: { items: true }
+        include: { items: true },
+        orderBy: { fechaCreacion: 'desc' }
       });
 
       return NextResponse.json({ pedidos });
     }
 
-    return NextResponse.json({ error: 'Email o número de pedido requerido' }, { status: 400 });
+    // Si no se proporciona email ni número, devolver todos los pedidos (para admin)
+    const pedidos = await prisma.pedido.findMany({
+      include: { items: true },
+      orderBy: { fechaCreacion: 'desc' }
+    });
+    return NextResponse.json({ pedidos });
   } catch (error) {
     console.error('Error al obtener pedidos:', error);
     return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });

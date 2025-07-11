@@ -10,6 +10,7 @@ interface Pedido {
   id: number;
   numero: string;
   total: number;
+  costoEnvio: number;
   estado: string;
   items: Array<{
     nombre: string;
@@ -26,9 +27,9 @@ function InstruccionesPagoContent() {
   const [loading, setLoading] = useState(true);
 
   const numeroPedido = searchParams.get('pedido');
-  const numeroNequi = '3023055014';
+  const numeroNequi = '3243118004';
   const titular = 'Estilo Urbano SAS';
-  const whatsapp = '3023055014';
+  const whatsapp = '3243118004';
 
   useEffect(() => {
     const cargarPedido = async () => {
@@ -122,9 +123,21 @@ function InstruccionesPagoContent() {
               <span className="font-medium">{pedido.numero}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Total a pagar:</span>
+              <span className="text-gray-600">Subtotal:</span>
+              <span className="font-medium">COP {(pedido.total - pedido.costoEnvio).toLocaleString('es-CO')}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Envío:</span>
+              <span className="font-medium">COP {pedido.costoEnvio.toLocaleString('es-CO')}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600 font-bold">Total a pagar:</span>
               <span className="font-bold text-lg text-green-600">COP {pedido.total.toLocaleString('es-CO')}</span>
             </div>
+          </div>
+          {/* Mensaje informativo sobre el carrito */}
+          <div className="mt-6 mb-2 p-4 bg-blue-50 border border-blue-200 rounded-lg text-blue-900 text-sm">
+            Tu carrito se ha vaciado para que puedas iniciar una nueva compra. Si deseas agregar más productos, simplemente vuelve a la tienda.
           </div>
           <div className="mt-6 pt-4 border-t">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Productos</h3>
@@ -147,7 +160,7 @@ function InstruccionesPagoContent() {
             </div>
             <div>
               <h3 className="text-lg font-semibold text-gray-900">Nequi</h3>
-              <p className="text-sm text-gray-600">Transferencia rápida y segura</p>
+              <p className="text-sm text-gray-600">Pago rápido y seguro</p>
             </div>
           </div>
           <div className="space-y-3">
@@ -199,7 +212,7 @@ function InstruccionesPagoContent() {
               <div className="w-6 h-6 bg-blue-200 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                 <span className="text-xs font-bold">1</span>
               </div>
-              <p>Realiza la transferencia por el monto exacto a Nequi.</p>
+              <p>Realiza el pago por el monto exacto a Nequi.</p>
             </div>
             <div className="flex items-start space-x-3">
               <div className="w-6 h-6 bg-blue-200 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">

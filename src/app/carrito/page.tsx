@@ -23,7 +23,7 @@ export default function CarritoPage() {
     tipoEnvio: 'envio', 
     ciudad: '', 
     departamento: '',
-    metodoPago: 'transferencia' // Solo transferencia bancaria (PSE)
+    metodoPago: 'transferencia' // Solo Nequi
   });
   const [formError, setFormError] = useState("");
   const [formSuccess, setFormSuccess] = useState("");
@@ -168,6 +168,36 @@ export default function CarritoPage() {
   const departamentosColombia = (colombiaData as Array<{departamento: string, ciudades: string[]}>);
   const listaDepartamentos = departamentosColombia.map(d => d.departamento).sort((a, b) => a.localeCompare(b));
 
+  // Verificar si el usuario está logueado cuando intenta hacer checkout
+  if (!session && showForm) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Inicia sesión para continuar</h2>
+          <p className="text-gray-600 mb-6">Necesitas estar logueado para completar tu compra.</p>
+          <div className="space-y-3">
+            <Link href="/login">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 w-full">
+                Iniciar sesión
+              </Button>
+            </Link>
+            <button 
+              onClick={() => setShowForm(false)} 
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
+              Volver al carrito
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (cart.length === 0 && !showForm && !formSuccess) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
@@ -183,19 +213,21 @@ export default function CarritoPage() {
 
   if (showForm && !formSuccess) {
     return (
-      <div className="min-h-screen bg-gray-50 py-10">
-        <div className="max-w-5xl mx-auto bg-white rounded shadow p-0 md:p-8 flex flex-col md:flex-row gap-0 md:gap-8">
+      <div className="min-h-screen bg-gray-50 py-6 sm:py-10">
+        <div className="max-w-5xl mx-auto bg-white rounded shadow p-4 sm:p-8 flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Columna izquierda: Formulario */}
-          <div className="flex-1 border-b md:border-b-0 md:border-r md:pr-8 pb-8 md:pb-0">
-            <h3 className="text-2xl font-bold mb-6 text-gray-900">Checkout</h3>
+          <div className="flex-1 border-b lg:border-b-0 lg:border-r lg:pr-8 pb-6 lg:pb-0">
+            <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-900">Checkout</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nombre(s) <span className="text-red-600">*</span></label>
-                <input name="nombre" type="text" placeholder="Nombres" value={form.nombre} onChange={handleInput} className="border rounded-lg px-4 py-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Apellidos <span className="text-red-600">*</span></label>
-                <input name="apellidos" type="text" placeholder="Apellidos" value={form.apellidos} onChange={handleInput} className="border rounded-lg px-4 py-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Nombre(s) <span className="text-red-600">*</span></label>
+                  <input name="nombre" type="text" placeholder="Nombres" value={form.nombre} onChange={handleInput} className="border rounded-lg px-4 py-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Apellidos <span className="text-red-600">*</span></label>
+                  <input name="apellidos" type="text" placeholder="Apellidos" value={form.apellidos} onChange={handleInput} className="border rounded-lg px-4 py-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Departamento <span className="text-red-600">*</span></label>
@@ -255,8 +287,7 @@ export default function CarritoPage() {
                         <span className="text-blue-600 font-bold text-sm">🏦</span>
                       </div>
                       <div>
-                        <div className="font-medium text-gray-900">Transferencia bancaria (PSE)</div>
-                        <div className="text-sm text-gray-500">Paga de forma segura por PSE</div>
+                        <div className="font-medium text-gray-900">Nequi</div>
                       </div>
                     </div>
                   </label>
@@ -265,11 +296,11 @@ export default function CarritoPage() {
               {formError && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg animate-fade-in">{formError}</div>
               )}
-              <div className="flex gap-3 mt-6">
-                <Button type="submit" size="lg" className="bg-blue-600 hover:bg-blue-700 text-white flex-1" disabled={loading}>
-                  {loading ? "Procesando pago..." : "Pagar con PSE"}
+              <div className="flex flex-col sm:flex-row gap-3 mt-6">
+                <Button type="submit" size="lg" className="w-full sm:flex-1 bg-blue-600 hover:bg-blue-700 text-white" disabled={loading}>
+                  {loading ? "Procesando pago..." : "Pagar con Nequi"}
                 </Button>
-                <Button type="button" variant="outline" onClick={() => setShowForm(false)} disabled={loading} className="flex-1">
+                <Button type="button" variant="outline" onClick={() => setShowForm(false)} disabled={loading} className="w-full sm:flex-1">
                   Volver al carrito
                 </Button>
               </div>
@@ -282,22 +313,22 @@ export default function CarritoPage() {
             </div>
           </div>
           {/* Columna derecha: Resumen del carrito */}
-          <div className="w-full md:w-[350px] flex-shrink-0 md:pl-8 pt-8 md:pt-0 border-t md:border-t-0 md:border-l">
+          <div className="w-full lg:w-[350px] flex-shrink-0 lg:pl-8 pt-6 lg:pt-0 border-t lg:border-t-0 lg:border-l">
             <h4 className="text-lg font-bold mb-4">Resumen de tu compra</h4>
             {/* Resumen del pedido */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
+            <div className="bg-white rounded-lg shadow-sm border p-4 sm:p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Resumen del pedido</h3>
               
               {/* Productos */}
               <div className="space-y-3 mb-4">
                 {cart.map(item => (
                   <div key={`${item.id}-${item.talla}`} className="flex items-center gap-3 border-b pb-3 last:border-b-0">
-                    {item.imagen && <Image src={item.imagen} alt={item.nombre} width={48} height={48} className="rounded-lg border object-cover" />}
-                    <div className="flex-1">
-                      <div className="font-medium text-gray-900">{item.nombre}</div>
+                    {item.imagen && <Image src={item.imagen} alt={item.nombre} width={48} height={48} className="rounded-lg border object-cover flex-shrink-0" />}
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-gray-900 truncate">{item.nombre}</div>
                       <div className="text-xs text-gray-500">Talla: {item.talla} | Cantidad: {item.cantidad}</div>
                     </div>
-                    <div className="font-semibold text-gray-700">COP {item.precio.toLocaleString("es-CO")}</div>
+                    <div className="font-semibold text-gray-700 text-sm sm:text-base">COP {item.precio.toLocaleString("es-CO")}</div>
                     <button onClick={() => removeFromCart(item.id, item.talla)} className="ml-2 text-red-600 hover:text-red-800 p-1 rounded-full hover:bg-red-50 transition-colors" title="Eliminar producto">
                       <Trash2 size={16} />
                     </button>
@@ -334,8 +365,8 @@ export default function CarritoPage() {
                     <span className="text-blue-600 font-bold text-xs">🏦</span>
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-gray-900">Transferencia bancaria (PSE)</div>
-                    <div className="text-xs text-gray-500">Paga de forma segura por PSE</div>
+                    <div className="text-sm font-medium text-gray-900">Nequi</div>
+                    <div className="text-xs text-gray-500"></div>
                   </div>
                 </div>
               </div>
@@ -351,12 +382,127 @@ export default function CarritoPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10">
-      <div className="max-w-3xl mx-auto bg-white rounded shadow p-6">
+    <div className="min-h-screen bg-gray-50 py-6 sm:py-10">
+      <div className="max-w-3xl mx-auto bg-white rounded shadow p-4 sm:p-6">
         {!showForm && !formSuccess && (
           <>
+            {/* Banner de login si no está logueado */}
+            {!session && (
+              <div className="mb-6 p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-blue-900 mb-1">
+                      Inicia sesión para una experiencia de compra más rápida
+                    </p>
+                    <p className="text-xs text-blue-700">
+                      Accede a tu historial de pedidos y guarda tus datos de envío
+                    </p>
+                  </div>
+                  <Link href="/login" className="w-full sm:w-auto">
+                    <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto">
+                      Iniciar sesión
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            )}
             <h2 className="text-2xl font-bold mb-6">Tu Carrito</h2>
-            <table className="w-full mb-6">
+            
+            {/* Vista móvil - Cards */}
+            <div className="block md:hidden space-y-4 mb-6">
+              {cart.map(item => (
+                <div key={`${item.id}-${item.talla}`} className="bg-white border rounded-lg p-4 shadow-sm">
+                  <div className="flex items-start gap-3 mb-3">
+                    {item.imagen && (
+                      <Image 
+                        src={item.imagen} 
+                        alt={item.nombre} 
+                        width={90} 
+                        height={90} 
+                        className="rounded-lg border object-cover flex-shrink-0 w-[90px] h-[90px]" 
+                      />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium text-gray-900 truncate">{item.nombre}</h3>
+                      <p className="text-sm text-gray-500">Talla: {item.talla}</p>
+                      <p className="text-sm font-medium text-gray-700">
+                        COP {item.precio.toLocaleString("es-CO")}
+                      </p>
+                    </div>
+                    <button 
+                      onClick={() => removeFromCart(item.id, item.talla)} 
+                      className="text-red-600 hover:text-red-800 p-1 rounded-full hover:bg-red-50 transition-colors flex-shrink-0"
+                      title="Eliminar producto"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <button 
+                        onClick={() => decreaseQuantity(item.id, item.talla)} 
+                        className="w-8 h-8 bg-gray-200 rounded-full hover:bg-gray-300 text-lg font-bold flex items-center justify-center transition-colors" 
+                        disabled={item.cantidad <= 1}
+                      >
+                        -
+                      </button>
+                      <span className="w-8 text-center font-medium">{item.cantidad}</span>
+                      <button 
+                        onClick={() => increaseQuantity(item.id, item.talla)} 
+                        className="w-8 h-8 bg-gray-200 rounded-full hover:bg-gray-300 text-lg font-bold flex items-center justify-center transition-colors"
+                      >
+                        +
+                      </button>
+                    </div>
+                    
+                    <div className="text-right">
+                      <p className="text-sm text-gray-500">Subtotal</p>
+                      <p className="font-semibold text-gray-900">
+                        COP {(item.precio * item.cantidad).toLocaleString("es-CO")}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Selector de talla móvil */}
+                  <div className="mt-3 pt-3 border-t">
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Cambiar talla:</label>
+                    <select
+                      className="w-full border rounded px-3 py-2 text-sm bg-white"
+                      value={item.talla}
+                      disabled={loadingTallas}
+                      onChange={e => {
+                        const nuevaTalla = e.target.value;
+                        const existente = cart.find(p => p.id === item.id && p.talla === nuevaTalla);
+                        if (existente) {
+                          increaseQuantity(item.id, nuevaTalla);
+                          removeFromCart(item.id, item.talla);
+                        } else {
+                          updateTalla(item.id, item.talla, nuevaTalla);
+                        }
+                      }}
+                    >
+                      {loadingTallas ? (
+                        <option>Cargando...</option>
+                      ) : (
+                        (productos[item.id] || [item.talla]).map(t => (
+                          <option key={t} value={t}>{t}</option>
+                        ))
+                      )}
+                    </select>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {/* Vista desktop - Tabla */}
+            <div className="hidden md:block overflow-x-auto rounded-lg mb-6">
+              <table className="w-full text-sm min-w-[600px]">
               <thead>
                 <tr className="text-left border-b">
                   <th className="py-3 px-2 font-semibold">Producto</th>
@@ -375,9 +521,9 @@ export default function CarritoPage() {
                           <Image 
                             src={item.imagen} 
                             alt={item.nombre} 
-                            width={60} 
-                            height={60} 
-                            className="rounded-lg border object-cover" 
+                            width={80} 
+                            height={80} 
+                            className="rounded-lg border object-cover flex-shrink-0 w-[80px] h-[80px]" 
                           />
                         )}
                         <span className="font-medium">{item.nombre}</span>
@@ -444,23 +590,24 @@ export default function CarritoPage() {
                 ))}
               </tbody>
             </table>
+            </div>
             <div className="border-t pt-6 mb-6">
               <div className="flex justify-between items-center">
                 <span className="text-lg font-semibold text-gray-700">Total:</span>
                 <span className="text-2xl font-bold text-gray-900">COP {total.toLocaleString("es-CO")}</span>
               </div>
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Button 
                 variant="outline" 
                 onClick={clearCart}
-                className="flex-1"
+                className="w-full sm:flex-1"
               >
                 Vaciar carrito
               </Button>
               <Button 
                 size="lg" 
-                className="bg-green-600 hover:bg-green-700 text-white flex-1" 
+                className="w-full sm:flex-1 bg-green-600 hover:bg-green-700 text-white" 
                 onClick={() => setShowForm(true)}
               >
                 Finalizar compra

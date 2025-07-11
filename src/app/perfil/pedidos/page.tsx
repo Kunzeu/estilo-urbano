@@ -65,6 +65,21 @@ export default function HistorialPedidosPage() {
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="max-w-3xl mx-auto px-4">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Mis pedidos</h1>
+        {/* Tarjetas de resumen */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div className="bg-white rounded-lg shadow-sm border p-4 text-center">
+            <div className="text-xs text-gray-500 mb-1">Total Pedidos</div>
+            <div className="text-2xl font-bold text-blue-700">{pedidos.length}</div>
+          </div>
+          <div className="bg-white rounded-lg shadow-sm border p-4 text-center">
+            <div className="text-xs text-gray-500 mb-1">Pedidos Completados</div>
+            <div className="text-2xl font-bold text-green-700">{pedidos.filter(p => p.estado === 'entregado').length}</div>
+          </div>
+          <div className="bg-white rounded-lg shadow-sm border p-4 text-center">
+            <div className="text-xs text-gray-500 mb-1">En Proceso</div>
+            <div className="text-2xl font-bold text-yellow-600">{pedidos.filter(p => p.estado !== 'entregado').length}</div>
+          </div>
+        </div>
         {pedidos.length === 0 ? (
           <div className="bg-white rounded-lg shadow-sm border p-8 text-center">
             <p className="text-gray-600">No tienes pedidos registrados aún.</p>
@@ -73,8 +88,8 @@ export default function HistorialPedidosPage() {
             </Link>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <table className="w-full text-sm">
+          <div className="bg-white rounded-lg shadow-sm border p-2 sm:p-6 overflow-x-auto">
+            <table className="w-full text-xs sm:text-sm min-w-[600px]">
               <thead>
                 <tr className="text-left border-b">
                   <th className="py-3 px-2 font-semibold">Pedido</th>
@@ -94,8 +109,20 @@ export default function HistorialPedidosPage() {
                       })}
                     </td>
                     <td className="py-3 px-2">
-                      <span className="px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
-                        {pedido.estado === 'pendiente_pago' ? 'Pendiente de pago' : pedido.estado === 'pagado' ? 'Pagado' : pedido.estado}
+                      <span
+                        className={
+                          pedido.estado === 'pagado'
+                            ? 'px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800'
+                            : pedido.estado === 'pendiente_pago'
+                            ? 'px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800'
+                            : 'px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800'
+                        }
+                      >
+                        {pedido.estado === 'pendiente_pago'
+                          ? 'Pendiente de pago'
+                          : pedido.estado === 'pagado'
+                          ? 'Pagado'
+                          : pedido.estado}
                       </span>
                     </td>
                     <td className="py-3 px-2 text-right font-medium">

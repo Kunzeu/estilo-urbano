@@ -56,8 +56,8 @@ export default function ProductosPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10">
-      <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+    <div className="min-h-screen bg-gray-50 py-6 sm:py-10">
+      <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8 px-2 sm:px-0">
         {productos.map(producto => {
           const tallas = JSON.parse(producto.tallas || "[]");
           const tallasSeleccionadas = selectedTallas[producto.id] || [];
@@ -77,37 +77,37 @@ export default function ProductosPage() {
           };
           
           return (
-            <div key={producto.id} className="bg-white rounded shadow p-4 flex flex-col items-center">
+            <div key={producto.id} className="bg-white rounded shadow p-3 sm:p-4 flex flex-col items-center w-full max-w-xs mx-auto">
               {producto.imagen && (
-                <div className="flex justify-center mb-3">
+                <div className="flex justify-center mb-3 w-full">
                   <Image 
                     src={producto.imagen} 
                     alt={producto.nombre} 
                     width={320} 
                     height={320} 
-                    className="w-80 h-80 object-cover rounded-lg border-2 border-gray-200 shadow-lg cursor-pointer" 
+                    className="w-full max-w-[220px] h-auto object-cover rounded-lg border-2 border-gray-200 shadow-lg cursor-pointer" 
                     onClick={() => setModalImagen(producto.imagen || "")}
                   />
                 </div>
               )}
-              <h2 className="font-bold text-lg mb-1">{producto.nombre}</h2>
-              <p className="text-gray-500 mb-2">COP {producto.precio.toLocaleString("es-CO", {minimumFractionDigits:2})}</p>
-              {producto.descripcion && <p className="text-sm text-gray-600 mb-2">{producto.descripcion}</p>}
+              <h2 className="font-bold text-base sm:text-lg mb-1 text-center break-words">{producto.nombre}</h2>
+              <p className="text-gray-500 mb-2 text-center text-sm sm:text-base">COP {producto.precio.toLocaleString("es-CO", {minimumFractionDigits:2})}</p>
+              {producto.descripcion && <p className="text-xs sm:text-sm text-gray-600 mb-2 text-center break-words">{producto.descripcion}</p>}
               
               {/* Botones de tallas */}
               <div className="w-full mb-3">
-                <label className="block text-sm font-medium mb-2">Tallas:</label>
+                <label className="block text-xs sm:text-sm font-medium mb-2">Tallas:</label>
                 <div className="flex flex-wrap gap-2">
                   {tallasDisponibles.map((talla: string) => (
                     <button
                       key={talla}
                       type="button"
                       onClick={() => handleTallaClick(talla)}
-                      className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
-                        tallasSeleccionadas.includes(talla)
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                      }`}
+                      className={`px-4 py-1 rounded-full text-xs sm:text-sm font-medium transition-colors border shadow-sm text-center select-none
+                        ${tallasSeleccionadas.includes(talla)
+                          ? 'bg-blue-600 text-white border-blue-600 shadow-md'
+                          : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-400'}
+                      `}
                     >
                       {talla}
                     </button>
@@ -121,7 +121,7 @@ export default function ProductosPage() {
               </div>
               
               <button
-                className={`bg-blue-600 text-white rounded px-4 py-2 font-semibold hover:bg-blue-700 transition ${addedId === producto.id ? 'bg-green-600 hover:bg-green-700' : ''}`}
+                className={`bg-blue-600 text-white rounded px-4 py-2 font-semibold hover:bg-blue-700 transition w-full mt-auto ${addedId === producto.id ? 'bg-green-600 hover:bg-green-700' : ''}`}
                 onClick={() => {
                   if (tallasDisponibles.length > 1 && tallasSeleccionadas.length === 0) {
                     alert("Por favor selecciona al menos una talla");
@@ -168,7 +168,7 @@ export default function ProductosPage() {
       {/* Modal de imagen */}
       {modalImagen && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[200]" onClick={() => setModalImagen(null)}>
-          <Image src={modalImagen} alt="Imagen grande" width={800} height={800} className="max-w-2xl max-h-[90vh] rounded-lg shadow-2xl border-4 border-white object-contain" />
+          <Image src={modalImagen} alt="Imagen grande" width={800} height={800} className="w-full max-w-xs sm:max-w-2xl max-h-[70vh] sm:max-h-[90vh] rounded-lg shadow-2xl border-4 border-white object-contain" />
         </div>
       )}
     </div>

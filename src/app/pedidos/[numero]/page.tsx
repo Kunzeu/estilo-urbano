@@ -134,10 +134,12 @@ export default function PedidoDetallePage() {
       <div className="max-w-4xl mx-auto px-4">
         {/* Header */}
         <div className="mb-6">
-          <Link href="/carrito" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-4">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Volver al carrito
-          </Link>
+          <div className="flex gap-2 mb-4">
+            <Link href="/perfil/pedidos" className="inline-flex items-center text-blue-600 hover:text-blue-700">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Volver a mis pedidos
+            </Link>
+          </div>
           <h1 className="text-3xl font-bold text-gray-900">Detalles del Pedido</h1>
         </div>
 
@@ -176,7 +178,7 @@ export default function PedidoDetallePage() {
                 <div className="flex justify-between items-center py-2 border-b">
                   <span className="text-gray-600">Método de pago:</span>
                   <span className="font-semibold text-gray-900">
-                    {pedido.metodoPago === 'transferencia' ? 'Transferencia bancaria (PSE)' : pedido.metodoPago}
+                    {pedido.metodoPago === 'transferencia' ? 'Nequi' : pedido.metodoPago}
                   </span>
                 </div>
               </div>
