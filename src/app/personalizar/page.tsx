@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Upload, Type, Image, Palette, Download, Undo, Redo } from "lucide-react"
+import { Upload, Type, Image as ImageIcon, Palette, Download, Undo, Redo } from "lucide-react"
 import { useState } from "react"
 
 export default function PersonalizarPage() {
@@ -116,7 +116,7 @@ export default function PersonalizarPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
-                    <Image className="w-5 h-5" />
+                    <ImageIcon className="w-5 h-5" />
                     Imágenes
                   </CardTitle>
                 </CardHeader>
