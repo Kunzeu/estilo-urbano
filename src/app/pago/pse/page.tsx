@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { CreditCard, CheckCircle, XCircle, Clock, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,7 @@ interface Pedido {
   }>;
 }
 
-export default function PagoPSEPage() {
+function PagoPSEContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [pedido, setPedido] = useState<Pedido | null>(null);
@@ -255,24 +255,9 @@ export default function PagoPSEPage() {
               <Button 
                 onClick={iniciarPago}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                size="lg"
               >
                 Iniciar pago PSE
               </Button>
-            )}
-
-            {estadoPago === 'procesando' && (
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                <p className="text-gray-600">Procesando pago...</p>
-              </div>
-            )}
-
-            {estadoPago === 'exitoso' && (
-              <div className="text-center">
-                <p className="text-green-600 mb-4">Redirigiendo a confirmación...</p>
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto"></div>
-              </div>
             )}
 
             {estadoPago === 'fallido' && (
@@ -280,38 +265,47 @@ export default function PagoPSEPage() {
                 <Button 
                   onClick={reintentarPago}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                  size="lg"
                 >
                   Reintentar pago
                 </Button>
                 <Link href="/carrito">
-                  <Button 
-                    variant="outline"
-                    className="w-full"
-                    size="lg"
-                  >
+                  <Button variant="outline" className="w-full">
                     Volver al carrito
                   </Button>
                 </Link>
               </div>
             )}
-          </div>
 
-          {/* Información de seguridad */}
-          <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-            <div className="flex items-center space-x-2 text-blue-800">
-              <div className="w-5 h-5 bg-blue-200 rounded-full flex items-center justify-center">
-                <span className="text-xs font-bold">🔒</span>
+            {estadoPago === 'exitoso' && (
+              <div className="text-center">
+                <p className="text-green-600 font-medium mb-4">
+                  Redirigiendo a la página de confirmación...
+                </p>
+                <Link href={`/pedidos/${pedido.numero}`}>
+                  <Button className="bg-green-600 hover:bg-green-700 text-white">
+                    Ver pedido
+                  </Button>
+                </Link>
               </div>
-              <span className="text-sm font-medium">Pago seguro con PSE</span>
-            </div>
-            <p className="text-xs text-blue-700 mt-2">
-              Tu información está protegida con encriptación SSL de 256 bits. 
-              No almacenamos datos de tu tarjeta bancaria.
-            </p>
+            )}
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PagoPSEPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Cargando información de pago...</p>
+        </div>
+      </div>
+    }>
+      <PagoPSEContent />
+    </Suspense>
   );
 } 
