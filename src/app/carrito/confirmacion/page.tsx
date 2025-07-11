@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { CheckCircle, Package, Phone, Mail } from 'lucide-react';
 import Link from 'next/link';
 
@@ -37,7 +37,7 @@ interface PedidoConfirmado {
   fechaCreacion: string;
 }
 
-export default function ConfirmacionPage() {
+function ConfirmacionContent() {
   const searchParams = useSearchParams();
   const [pedido, setPedido] = useState<PedidoConfirmado | null>(null);
   const [loading, setLoading] = useState(true);
@@ -307,5 +307,13 @@ export default function ConfirmacionPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ConfirmacionPage() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <ConfirmacionContent />
+    </Suspense>
   );
 } 
