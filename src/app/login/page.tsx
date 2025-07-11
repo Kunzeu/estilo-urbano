@@ -16,7 +16,7 @@ export default function LoginPage() {
     setLoading(true);
     if (isRegister) {
       // Registro manual
-      const res = await fetch("http://localhost:3002/api/registro", {
+      const res = await fetch("/api/registro", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, nombre }),
