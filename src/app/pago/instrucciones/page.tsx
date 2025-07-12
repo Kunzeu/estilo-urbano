@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { Copy, CheckCircle, ArrowLeft, Phone } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -266,6 +266,8 @@ function InstruccionesPagoContent() {
     </div>
   );
 }
+
+import { Suspense } from 'react';
 
 export default function InstruccionesPagoPage() {
   return (

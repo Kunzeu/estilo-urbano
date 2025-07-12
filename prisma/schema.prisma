@@ -67,3 +67,5 @@ model PedidoItem {
   precio     Float
   imagen     String?
 }
+
+

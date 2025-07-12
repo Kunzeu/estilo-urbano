@@ -92,6 +92,10 @@ export default function AdminPage() {
             <p className="text-gray-600 dark:text-gray-300 mb-6">Ajustes generales del sistema y configuración.</p>
             <Link href="/admin/configuracion" className="w-full inline-block bg-purple-600 text-white font-semibold py-2 rounded-lg shadow hover:bg-purple-700 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900">Configuración</Link>
           </div>
+
+
+
+
         </div>
 
         <div className="mt-10 text-center">

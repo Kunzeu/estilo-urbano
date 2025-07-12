@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ShoppingBag, User, Menu, X } from "lucide-react"
+import { ShoppingCart, User, Menu, X, Heart } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 
@@ -14,19 +14,16 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
               <span className="text-white font-bold text-sm">EU</span>
             </div>
-            <span className="text-xl font-bold text-gray-900">Estilo Urbano</span>
+            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Estilo Urbano</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link href="/productos" className="text-gray-600 hover:text-gray-900 transition-colors">
               Productos
-            </Link>
-            <Link href="/personalizar" className="text-gray-600 hover:text-gray-900 transition-colors">
-              Personalizar
             </Link>
             <Link href="/colecciones" className="text-gray-600 hover:text-gray-900 transition-colors">
               Colecciones
@@ -39,8 +36,14 @@ export default function Header() {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
             <Link href="/carrito">
+              <Button variant="ghost" size="icon" className="relative">
+                <ShoppingCart className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+              </Button>
+            </Link>
+            <Link href="/favoritos">
               <Button variant="ghost" size="icon">
-                <ShoppingBag className="h-5 w-5" />
+                <Heart className="h-5 w-5" />
               </Button>
             </Link>
             <Link href="/login">
@@ -49,7 +52,9 @@ export default function Header() {
               </Button>
             </Link>
             <Link href="/productos">
-              <Button>Ver Productos</Button>
+              <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                Ver Productos
+              </Button>
             </Link>
           </div>
 
@@ -77,13 +82,6 @@ export default function Header() {
                 Productos
               </Link>
               <Link
-                href="/personalizar"
-                className="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Personalizar
-              </Link>
-              <Link
                 href="/colecciones"
                 className="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
                 onClick={() => setIsMenuOpen(false)}
@@ -104,6 +102,13 @@ export default function Header() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Carrito
+                </Link>
+                <Link
+                  href="/favoritos"
+                  className="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Favoritos
                 </Link>
                 <Link
                   href="/login"
