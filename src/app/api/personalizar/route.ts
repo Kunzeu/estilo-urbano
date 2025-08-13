@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir, unlink } from "fs/promises";
-import path from "path";
+// import { unlink } from "fs/promises";
+// import path from "path";
 import { prisma } from "@/lib/prisma";
+import { cloudinary } from "@/lib/cloudinary";
 
 export async function POST(req: Request) {
   try {
@@ -33,35 +34,34 @@ export async function POST(req: Request) {
 
       if (imagen && typeof imagen === "object" && (imagen as File).size > 0) {
         const buffer = Buffer.from(await (imagen as File).arrayBuffer());
-        const safeName = (imagen as File).name.replace(/[^a-zA-Z0-9_.-]/g, "_");
-        const fileName = `personalizado_${Date.now()}_${i}_${safeName}`;
-        const uploadsDir = path.join(process.cwd(), "public", "uploads");
-        await mkdir(uploadsDir, { recursive: true });
-        const filePath = path.join(uploadsDir, fileName);
-        await writeFile(filePath, buffer);
-        imagenPath = `/uploads/${fileName}`;
+        const base64 = buffer.toString("base64");
+        const uploadRes = await cloudinary.uploader.upload(`data:${(imagen as File).type};base64,${base64}`, {
+          folder: "estilo-urbano/personalizados",
+          overwrite: true,
+        });
+        imagenPath = uploadRes.secure_url;
       }
 
       if (imagenFrenteFile && typeof imagenFrenteFile === "object" && (imagenFrenteFile as File).size > 0) {
         const buffer = Buffer.from(await (imagenFrenteFile as File).arrayBuffer());
-        const safeName = (imagenFrenteFile as File).name.replace(/[^a-zA-Z0-9_.-]/g, "_");
-        const fileName = `personalizado_frente_${Date.now()}_${i}_${safeName}`;
-        const uploadsDir = path.join(process.cwd(), "public", "uploads");
-        await mkdir(uploadsDir, { recursive: true });
-        const filePath = path.join(uploadsDir, fileName);
-        await writeFile(filePath, buffer);
-        imagenFrentePath = `/uploads/${fileName}`;
+        const base64 = buffer.toString("base64");
+        const uploadRes = await cloudinary.uploader.upload(`data:${(imagenFrenteFile as File).type};base64,${base64}`, {
+          folder: "estilo-urbano/personalizados",
+          overwrite: true,
+          public_id: `personalizado_frente_${Date.now()}_${i}`,
+        });
+        imagenFrentePath = uploadRes.secure_url;
       }
 
       if (imagenEspaldaFile && typeof imagenEspaldaFile === "object" && (imagenEspaldaFile as File).size > 0) {
         const buffer = Buffer.from(await (imagenEspaldaFile as File).arrayBuffer());
-        const safeName = (imagenEspaldaFile as File).name.replace(/[^a-zA-Z0-9_.-]/g, "_");
-        const fileName = `personalizado_espalda_${Date.now()}_${i}_${safeName}`;
-        const uploadsDir = path.join(process.cwd(), "public", "uploads");
-        await mkdir(uploadsDir, { recursive: true });
-        const filePath = path.join(uploadsDir, fileName);
-        await writeFile(filePath, buffer);
-        imagenEspaldaPath = `/uploads/${fileName}`;
+        const base64 = buffer.toString("base64");
+        const uploadRes = await cloudinary.uploader.upload(`data:${(imagenEspaldaFile as File).type};base64,${base64}`, {
+          folder: "estilo-urbano/personalizados",
+          overwrite: true,
+          public_id: `personalizado_espalda_${Date.now()}_${i}`,
+        });
+        imagenEspaldaPath = uploadRes.secure_url;
       }
 
       items.push({ color, talla, texto, textoColor, imagen: imagenPath, imagenFrente: imagenFrentePath, imagenEspalda: imagenEspaldaPath });
@@ -184,17 +184,7 @@ export async function DELETE(req: Request) {
     if (!pedido) {
       return NextResponse.json({ error: "Pedido no encontrado" }, { status: 404 });
     }
-    // Intentar borrar archivos asociados
-    const paths: string[] = [];
-    for (const it of pedido.items as Array<{ imagen?: string | null; imagenFrente?: string | null; imagenEspalda?: string | null }>) {
-      [it.imagen, it.imagenFrente, it.imagenEspalda].forEach((p) => { if (p && p.startsWith("/uploads/")) paths.push(p); });
-    }
-    await Promise.all(paths.map(async (p) => {
-      try {
-        const rel = p.replace(/^\//, "");
-        await unlink(path.join(process.cwd(), "public", rel));
-      } catch { /* ignore */ }
-    }));
+    // Si se usa Cloudinary, no hay archivos locales que borrar
     // Borrar items primero para evitar restricciones de FK
     await prismaAny.personalizacionItem.deleteMany({ where: { pedidoId: pedido.id } });
     await prismaAny.personalizacionPedido.delete({ where: { id: pedido.id } });
