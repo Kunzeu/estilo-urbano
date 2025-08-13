@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+	provider = "prisma-client-js"
+}
+
+datasource db {
+	provider = "postgresql"
+	url      = env("DATABASE_URL")
+}
+
+model Producto {
+	id          Int          @id @default(autoincrement())
+	nombre      String
+	descripcion String?
+	precio      Float
+	imagen      String?
+	public_id   String?
+	tallas      String
+	pedidoItems PedidoItem[]
+}
+
+model User {
+	id                      Int                     @id @default(autoincrement())
+	nombre                  String?
+	email                   String                  @unique
+	password                String?
+	image                   String?
+	provider                String?
+	createdAt               DateTime                @default(now())
+	updatedAt               DateTime                @updatedAt
+	rol                     String                  @default("user")
+	pedidos                 Pedido[]
+	personalizacionPedidos  PersonalizacionPedido[] @relation(name: "UserToPersonalizacionPedidos")
+}
+
+model Pedido {
+	id            Int         @id @default(autoincrement())
+	numero        String      @unique
+	user          User?       @relation(fields: [userId], references: [id])
+	userId        Int?
+	email         String
+	nombre        String
+	apellidos     String
+	direccion     String
+	telefono      String
+	ciudad        String
+	departamento  String
+	total         Float
+	costoEnvio    Float
+	metodoPago    String
+	estado        String      @default("pendiente")
+	fechaCreacion DateTime    @default(now())
+	fechaPago     DateTime?
+	items         PedidoItem[]
+}
+
+model PedidoItem {
+	id         Int       @id @default(autoincrement())
+	pedido     Pedido    @relation(fields: [pedidoId], references: [id])
+	pedidoId   Int
+	producto   Producto  @relation(fields: [productoId], references: [id])
+	productoId Int
+	nombre     String
+	talla      String
+	cantidad   Int
+	precio     Float
+	imagen     String?
+}
+
+// Pedido de personalización (cabecera)
+model PersonalizacionPedido {
+	id           Int                     @id @default(autoincrement())
+	numero       String                  @unique
+	user         User?                   @relation(name: "UserToPersonalizacionPedidos", fields: [userId], references: [id])
+	userId       Int?
+	email        String
+	estado       String                  @default("pendiente")
+	createdAt    DateTime                @default(now())
+	// Datos de checkout
+	nombre       String?
+	apellidos    String?
+	direccion    String?
+	telefono     String?
+	ciudad       String?
+	departamento String?
+	metodoPago   String?
+	total        Float                   @default(0)
+	costoEnvio   Float                   @default(0)
+	items        PersonalizacionItem[]
+}
+
+// Ítems personalizados (camisetas)
+model PersonalizacionItem {
+	id            Int                     @id @default(autoincrement())
+	pedido        PersonalizacionPedido   @relation(fields: [pedidoId], references: [id])
+	pedidoId      Int
+	color         String
+	talla         String
+	texto         String?
+	textoColor    String?
+	imagen        String?
+	imagenFrente  String?
+	imagenEspalda String?
+	cantidad      Int                     @default(1)
+	precio        Float                   @default(0)
+}
+
+
