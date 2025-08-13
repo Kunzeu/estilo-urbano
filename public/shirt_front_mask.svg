@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 640" preserveAspectRatio="xMidYMid meet">
+  <!-- Máscara blanca donde la camiseta es visible -->
+  <path fill="#ffffff" d="M160 96c32 18 64 26 96 26s64-8 96-26l56 48c-16 16-24 32-24 48v272c0 35.3-28.7 64-64 64H192c-35.3 0-64-28.7-64-64V192c0-16-8-32-24-48l56-48z"/>
+</svg>
+

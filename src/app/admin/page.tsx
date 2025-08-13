@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Link from "next/link";
-import { Users, Package, ClipboardList, Settings } from "lucide-react";
+import { Users, Package, ClipboardList, Settings, Shirt } from "lucide-react";
 
 interface UserWithRol {
   name?: string | null;
@@ -81,6 +81,16 @@ export default function AdminPage() {
             <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Gestión de Pedidos</h3>
             <p className="text-gray-600 dark:text-gray-300 mb-6">Visualiza y actualiza el estado de todos los pedidos realizados en la tienda.</p>
             <Link href="/admin/pedidos" className="w-full inline-block bg-orange-500 text-white font-semibold py-2 rounded-lg shadow hover:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900">Gestionar Pedidos</Link>
+          </div>
+
+          {/* Personalizados */}
+          <div className="group bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 flex flex-col items-center text-center transition-transform hover:-translate-y-1 hover:shadow-2xl border border-transparent hover:border-yellow-200 dark:hover:border-yellow-800">
+            <div className="bg-yellow-100 dark:bg-yellow-900 p-4 rounded-full mb-4">
+              <Shirt size={40} className="text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Gestión de Personalizados</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">Revisa los pedidos de camisetas personalizadas y descarga diseños.</p>
+            <Link href="/admin/personalizados" className="w-full inline-block bg-yellow-500 text-white font-semibold py-2 rounded-lg shadow hover:bg-yellow-600 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900">Ver Personalizados</Link>
           </div>
 
           {/* Configuración */}

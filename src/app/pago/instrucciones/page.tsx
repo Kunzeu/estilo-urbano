@@ -39,13 +39,23 @@ function InstruccionesPagoContent() {
       }
 
       try {
-        const response = await fetch(`/api/pedidos?numero=${numeroPedido}`);
-        if (!response.ok) {
-          throw new Error('Pedido no encontrado');
+        // Intentar pedido normal
+        let response = await fetch(`/api/pedidos?numero=${numeroPedido}`);
+        if (response.ok) {
+          const data = await response.json();
+          setPedido(data.pedido);
+          return;
         }
 
-        const data = await response.json();
-        setPedido(data.pedido);
+        // Fallback a pedido personalizado
+        response = await fetch(`/api/personalizar?numero=${numeroPedido}`);
+        if (response.ok) {
+          const data = await response.json();
+          setPedido(data.pedido);
+          return;
+        }
+
+        throw new Error('Pedido no encontrado');
       } catch (error) {
         console.error('Error al cargar pedido:', error);
         router.push('/carrito');

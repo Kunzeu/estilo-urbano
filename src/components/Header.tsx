@@ -69,7 +69,7 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 w-full bg-white/80 dark:bg-gray-900/80 shadow-md z-50 backdrop-blur border-b border-gray-200 dark:border-gray-800">
-      <nav className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
+      <nav className="w-full flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3">
         <Link href="/" className="flex items-center gap-2">
           <Image src="/logo-estilo-urbano.png" alt="Estilo Urbano Logo" width={48} height={48} className="rounded" priority />
           <span className="text-2xl font-bold text-blue-600 dark:text-blue-400 tracking-tight hidden sm:inline">Estilo Urbano</span>

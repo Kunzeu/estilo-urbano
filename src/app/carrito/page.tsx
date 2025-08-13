@@ -28,7 +28,7 @@ export default function CarritoPage() {
   const [formError, setFormError] = useState("");
   const [formSuccess, setFormSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-  const [productos, setProductos] = useState<{ [id: number]: string[] }>({});
+  const [productos, setProductos] = useState<{ [id: number]: string [] }>({});
   const [loadingTallas, setLoadingTallas] = useState(false);
 
   useEffect(() => {

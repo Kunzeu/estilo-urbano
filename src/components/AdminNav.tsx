@@ -1,7 +1,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { Users, Package, Settings } from "lucide-react";
+import { Users, Package, Settings, Shirt } from "lucide-react";
 
 interface UserWithRol {
   name?: string | null;
@@ -48,6 +48,17 @@ export default function AdminNav() {
           </div>
         </Link>
         
+        <Link 
+          href="/admin/personalizados" 
+          className="flex items-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-900/30 transition-colors"
+        >
+          <Shirt className="w-6 h-6 text-yellow-600 dark:text-yellow-400 mr-3" />
+          <div>
+            <h3 className="font-semibold text-yellow-900 dark:text-yellow-100">Personalizados</h3>
+            <p className="text-sm text-yellow-700 dark:text-yellow-300">Pedidos personalizados</p>
+          </div>
+        </Link>
+
         <Link 
           href="/admin/configuracion" 
           className="flex items-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors"
